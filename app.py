@@ -5,7 +5,7 @@ import pytesseract
 
 plt.style.use("dark_background")
 
-img_path = "kor-ana1.jpg"
+img_path = "1.jpg"
 img_lang = "kor"
 img_ori = cv2.imread("img/"+img_path)
 
@@ -41,7 +41,7 @@ img_thresh = cv2.adaptiveThreshold(
 # plt.show()
 
 # 윤곽선 찾기
-contours, _ = cv2.findContours(
+_, contours, _ = cv2.findContours(
     img_thresh, 
     mode=cv2.RETR_LIST, 
     method=cv2.CHAIN_APPROX_SIMPLE
@@ -236,7 +236,7 @@ for i, plate_img in enumerate(plate_imgs):
     _, plate_img = cv2.threshold(plate_img, thresh=0.0, maxval=255.0, type=cv2.THRESH_BINARY | cv2.THRESH_OTSU)
     
     # find contours again (same as above)
-    contours, _ = cv2.findContours(plate_img, mode=cv2.RETR_LIST, method=cv2.CHAIN_APPROX_SIMPLE)
+    _, contours, _ = cv2.findContours(plate_img, mode=cv2.RETR_LIST, method=cv2.CHAIN_APPROX_SIMPLE)
     
     plate_min_x, plate_min_y = plate_img.shape[1], plate_img.shape[0]
     plate_max_x, plate_max_y = 0, 0
@@ -265,7 +265,7 @@ for i, plate_img in enumerate(plate_imgs):
     _, img_result = cv2.threshold(img_result, thresh=0.0, maxval=255.0, type=cv2.THRESH_BINARY | cv2.THRESH_OTSU)
     img_result = cv2.copyMakeBorder(img_result, top=10, bottom=10, left=10, right=10, borderType=cv2.BORDER_CONSTANT, value=(0,0,0))
 
-    chars = pytesseract.image_to_string(img_result, lang=img_lang, config='--psm 7 --oem 0')
+    chars = pytesseract.image_to_string(img_result, lang='kor', config='--psm 7 --oem 0')
     
     result_chars = ''
     has_digit = False
